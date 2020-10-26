@@ -27,7 +27,8 @@ CC0 Public Domain Dedication, which applies to this software.
 			</canvas>
 		</div>
 		<p>
-			Caution! Reloading the page will clear the canvas.
+			Caution! Reloading the page will clear the canvas.<br>
+			Attempting to draw text (or anything elaborate) is not recommended.
 		</p>
 	</body>
 
@@ -71,10 +72,18 @@ CC0 Public Domain Dedication, which applies to this software.
 		const textArea = document.getElementById("jsquickjot-textarea");
 		const canvas = document.getElementById("jsquickjot-canvas");
 		const context2D = canvas.getContext("2d");
+		context2D.lineWidth = 8;
 		
-		var isDrawing = false;		
-		canvas.addEventListener('mousedown', (eM) => isDrawing = true);
+		var isDrawing = false;
+		canvas.addEventListener('mousedown', function (eM) {
+			isDrawing = true;
+			context2D.beginPath();
+			context2D.rect(eM.offsetX, eM.offsetY, 1, 1);
+			context2D.closePath();
+			context2D.stroke();
+		});
 		canvas.addEventListener('mouseup', (eM) => isDrawing = false);
+		canvas.addEventListener('mouseout', (eM) => isDrawing = false);
 		canvas.addEventListener('mousemove', function (eM) {
 			if (!isDrawing) return;
 			context2D.beginPath();
